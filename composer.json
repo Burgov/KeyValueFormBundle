@@ -1,0 +1,13 @@
+{
+    "name": "burgov/key-value-form-bundle",
+    "license": "MIT",
+    "type": "bundle",
+    "description": "A form type for managing key-value pairs",
+    "autoload": {
+        "psr-4": { "Burgov\\Bundle\\KeyValueFormBundle\\": "" }
+    },
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/form": "~2.3"
+    }
+}
