@@ -39,7 +39,7 @@ class KeyValueType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'type' => new KeyValueRowType(),
+            'type' => 'burgov_key_value_row',
             'allow_add' => true,
             'allow_delete' => true,
             'value_options' => array(),

@@ -2,12 +2,19 @@
 
 namespace Burgov\Bundle\KeyValueFormBundle\Tests\Form\Type;
 
+use Burgov\Bundle\KeyValueFormBundle\Form\Type\KeyValueRowType;
 use Burgov\Bundle\KeyValueFormBundle\Form\Type\KeyValueType;
+use Symfony\Component\Form\AbstractExtension;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class KeyValueTypeTest extends TypeTestCase
 {
+    public function getExtensions()
+    {
+        return array(new ConcreteExtension());
+    }
+
     public function testSubmitValidData()
     {
         $originalData = array(
@@ -36,7 +43,7 @@ class KeyValueTypeTest extends TypeTestCase
             'key3' => '1',
         );
 
-        $builder = $this->factory->createBuilder(new KeyValueType(), $originalData, array('value_type' => 'text'));
+        $builder = $this->factory->createBuilder('burgov_key_value', $originalData, array('value_type' => 'text'));
 
         $form = $builder->getForm();
 
@@ -60,7 +67,7 @@ class KeyValueTypeTest extends TypeTestCase
         $obj2->id = 2;
         $obj2->name = 'choice2';
 
-        $builder = $this->factory->createBuilder(new KeyValueType(), null, array('value_type' => 'choice', 'value_options' => array(
+        $builder = $this->factory->createBuilder('burgov_key_value', null, array('value_type' => 'choice', 'value_options' => array(
             'choice_list' => new ObjectChoiceList(array($obj1, $obj2), 'name', array(), null, 'id')
         )));
 
@@ -92,5 +99,17 @@ class KeyValueTypeTest extends TypeTestCase
         foreach ($types as $key => $type) {
             $this->assertEquals($type, $form->get($key)->get('value')->getConfig()->getType()->getInnerType()->getName());
         }
+    }
+}
+
+class ConcreteExtension extends AbstractExtension
+{
+    protected function loadTypes()
+    {
+        return array(new KeyValueType(), new KeyValueRowType());
+    }
+
+    protected function loadTypeGuesser()
+    {
     }
 }

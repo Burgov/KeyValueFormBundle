@@ -4,17 +4,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
-    <parameters>
-        <parameter key="burgov_key_value_form.example.class">Burgov\Bundle\KeyValueFormBundle\Example</parameter>
-    </parameters>
-
     <services>
-        <service id="burgov_key_value_form.example" class="%burgov_key_value_form.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="burgov_key_value_form.key_value_type" class="Burgov\Bundle\KeyValueFormBundle\Form\Type\KeyValueType">
+            <tag name="form.type" alias="burgov_key_value"/>
+        </service>
+        <service id="burgov_key_value_form.key_value_row_type" class="Burgov\Bundle\KeyValueFormBundle\Form\Type\KeyValueRowType">
+            <tag name="form.type" alias="burgov_key_value_row"/>
         </service>
     </services>
-    -->
+
 </container>
