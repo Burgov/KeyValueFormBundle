@@ -43,15 +43,18 @@ class KeyValueType extends AbstractType
             'allow_add' => true,
             'allow_delete' => true,
             'value_options' => array(),
+            'allowed_keys' => null,
             'options' => function(Options $options) {
                 return array(
                     'value_type' => $options['value_type'],
-                    'value_options' => $options['value_options']
+                    'value_options' => $options['value_options'],
+                    'allowed_keys' => $options['allowed_keys']
                 );
             }
         ));
 
         $resolver->setRequired(array('value_type'));
+        $resolver->setAllowedTypes(array('allowed_keys' => array('null', 'array')));
     }
 
     public function getParent()
