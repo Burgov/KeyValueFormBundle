@@ -20,6 +20,9 @@ class HashToKeyValueArrayTransformer implements DataTransformerInterface
         foreach ($value as $data) {
             if (array('key', 'value') != array_keys($data)) {
                 continue;
+
+            if (array_key_exists($data['key'], $return)) {
+                throw new TransformationFailedException('Duplicate key detected');
             }
 
             $return[$data['key']] = $data['value'];
