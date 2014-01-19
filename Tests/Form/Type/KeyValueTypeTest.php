@@ -3,6 +3,7 @@
 namespace Burgov\Bundle\KeyValueFormBundle\Tests\Form\Type;
 
 use Burgov\Bundle\KeyValueFormBundle\Form\Type\KeyValueType;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class KeyValueTypeTest extends TypeTestCase
@@ -12,46 +13,77 @@ class KeyValueTypeTest extends TypeTestCase
         $originalData = array(
             'old-key1' => 'old-string-value1',
             'old-key2' => 'old-string-value2',
-            'old-key3' => 8,
-            'old-key4' => false
         );
 
         $submitData = array(
             array(
                 'key' => 'key1',
-                'type' => 'string',
                 'value' => 'string-value'
             ),
             array(
                 'key' => 'key2',
-                'type' => 'integer',
                 'value' => '5'
             ),
             array(
                 'key' => 'key3',
-                'type' => 'boolean',
                 'value' => '1'
             )
         );
 
         $expectedData = array(
             'key1' => 'string-value',
-            'key2' => 5,
-            'key3' => true,
+            'key2' => '5',
+            'key3' => '1',
         );
 
-        $builder = $this->factory->createBuilder(new KeyValueType(), $originalData);
+        $builder = $this->factory->createBuilder(new KeyValueType(), $originalData, array('value_type' => 'text'));
 
         $form = $builder->getForm();
 
-        $this->assertFormTypes(array('text', 'text', 'integer', 'checkbox'), $form);
+        $this->assertFormTypes(array('text', 'text'), $form);
 
         $form->submit($submitData);
         $this->assertTrue($form->isValid(), $form->getErrorsAsString());
 
-        $this->assertFormTypes(array('text', 'integer', 'checkbox'), $form);
+        $this->assertFormTypes(array('text', 'text', 'text'), $form);
 
         $this->assertSame($expectedData, $form->getData());
+    }
+
+    public function testWithChoiceType()
+    {
+        $obj1 = new \StdClass();
+        $obj1->id = 1;
+        $obj1->name = 'choice1';
+
+        $obj2 = new \StdClass();
+        $obj2->id = 2;
+        $obj2->name = 'choice2';
+
+        $builder = $this->factory->createBuilder(new KeyValueType(), null, array('value_type' => 'choice', 'value_options' => array(
+            'choice_list' => new ObjectChoiceList(array($obj1, $obj2), 'name', array(), null, 'id')
+        )));
+
+        $form = $builder->getForm();
+
+        $this->assertFormTypes(array(), $form);
+
+        $form->submit(array(
+            array(
+                'key' => 'key1',
+                'value' => '2'
+            ),
+            array(
+                'key' => 'key2',
+                'value' => '1'
+            )
+        ));
+
+        $this->assertFormTypes(array('choice', 'choice'), $form);
+
+        $this->assertTrue($form->isValid());
+
+        $this->assertSame(array('key1' => $obj2, 'key2' => $obj1), $form->getData());
     }
 
     private function assertFormTypes(array $types, $form) {

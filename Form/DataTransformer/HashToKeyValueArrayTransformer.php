@@ -2,6 +2,7 @@
 namespace Burgov\Bundle\KeyValueFormBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class HashToKeyValueArrayTransformer implements DataTransformerInterface
 {
@@ -17,6 +18,10 @@ class HashToKeyValueArrayTransformer implements DataTransformerInterface
         $return = array();
 
         foreach ($value as $data) {
+            if (array('key', 'value') != array_keys($data)) {
+                continue;
+            }
+
             $return[$data['key']] = $data['value'];
         }
 
