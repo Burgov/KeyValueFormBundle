@@ -86,9 +86,10 @@ class KeyValueTypeTest extends TypeTestCase
         $this->assertSame(array('key1' => $obj2, 'key2' => $obj1), $form->getData());
     }
 
-    private function assertFormTypes(array $types, $form) {
+    private function assertFormTypes(array $types, $form)
+    {
         $this->assertCount(count($types), $form);
-        foreach($types as $key => $type) {
+        foreach ($types as $key => $type) {
             $this->assertEquals($type, $form->get($key)->get('value')->getConfig()->getType()->getInnerType()->getName());
         }
     }
