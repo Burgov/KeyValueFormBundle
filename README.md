@@ -19,7 +19,7 @@ an example of how to render it client side.
 
 The type adds three options to the collection type options, of which one is required:
 
-`value_type` (required) defines which form type to use to render the value field
-`value_options` optional options to the child defined in `value_type`
-`allowed_keys` if this option is provided, the key field (which is usually a simple text field) will change
+  * `value_type` (required) defines which form type to use to render the value field
+  * `value_options` optional options to the child defined in `value_type`
+  * `allowed_keys` if this option is provided, the key field (which is usually a simple text field) will change
 to a `choice` field, and allow only those values you supplied in the this option.
