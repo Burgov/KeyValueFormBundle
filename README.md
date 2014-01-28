@@ -14,7 +14,7 @@ $formFactory->create('burgov_key_value', $data, array('value_type' => 'text'));
 ```
 
 The type extends the collection type, so for rendering it in the browser, the same logic is used. See the 
-[http://symfony.com/doc/current/cookbook/form/form_collections.html](Symfony docs on collection types) for
+[Symfony docs on collection types](http://symfony.com/doc/current/cookbook/form/form_collections.html) for
 an example of how to render it client side.
 
 The type adds three options to the collection type options, of which one is required:
