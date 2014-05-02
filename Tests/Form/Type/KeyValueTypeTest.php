@@ -4,6 +4,7 @@ namespace Burgov\Bundle\KeyValueFormBundle\Tests\Form\Type;
 
 use Burgov\Bundle\KeyValueFormBundle\Form\Type\KeyValueRowType;
 use Burgov\Bundle\KeyValueFormBundle\Form\Type\KeyValueType;
+use Burgov\Bundle\KeyValueFormBundle\Tests\Form\Fixtures\ObjectWithAdderRemoverSetterAndGetter;
 use Symfony\Component\Form\AbstractExtension;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -91,6 +92,31 @@ class KeyValueTypeTest extends TypeTestCase
         $this->assertTrue($form->isValid());
 
         $this->assertSame(array('key1' => $obj2, 'key2' => $obj1), $form->getData());
+    }
+
+    public function testSettingValuesToObjectWithAddersAndRemoversWorksFine()
+    {
+        $object = new ObjectWithAdderRemoverSetterAndGetter();
+        $object->setValues(array('key1' => '2', 'key2' => '1'));
+
+        $builder = $this->factory->createBuilder('form', $object);
+        $builder->add('values', 'burgov_key_value', array('value_type' => 'text'));
+
+        $form = $builder->getForm();
+
+        $form->submit(array(
+            'values' => array(
+                array(
+                    'key' => 'key3',
+                    'value' => '6'
+                ), array(
+                    'key' => 'key4',
+                    'value' => '8'
+                )
+            )
+        ));
+
+        $this->assertEquals(array('key3' => '6', 'key4' => '8'));
     }
 
     private function assertFormTypes(array $types, $form)
