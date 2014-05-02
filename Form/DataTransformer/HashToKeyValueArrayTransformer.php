@@ -8,6 +8,16 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 class HashToKeyValueArrayTransformer implements DataTransformerInterface
 {
 
+    private $useContainerObject;
+
+    /**
+     * @param bool $useContainerObject Whether to return a KeyValueContainer object or simply an array
+     */
+    public function __construct($useContainerObject)
+    {
+        $this->useContainerObject = $useContainerObject;
+    }
+
     /**
      * Doing the transformation here would be too late for the collection type to do it's resizing magic, so
      * instead it is done in the forms PRE_SET_DATA listener
@@ -17,9 +27,14 @@ class HashToKeyValueArrayTransformer implements DataTransformerInterface
         return $value;
     }
 
+    /**
+     * @param mixed $value
+     * @return KeyValueContainer|array
+     * @throws \Symfony\Component\Form\Exception\TransformationFailedException
+     */
     public function reverseTransform($value)
     {
-        $return = new KeyValueContainer();
+        $return = $this->useContainerObject ? new KeyValueContainer() : array();
 
         foreach ($value as $data) {
             if (array('key', 'value') != array_keys($data)) {

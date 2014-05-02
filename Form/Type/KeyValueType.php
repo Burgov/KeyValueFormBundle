@@ -14,7 +14,7 @@ class KeyValueType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addModelTransformer(new HashToKeyValueArrayTransformer());
+        $builder->addModelTransformer(new HashToKeyValueArrayTransformer($options['use_container_object']));
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $e) {
             $input = $e->getData();
@@ -44,6 +44,7 @@ class KeyValueType extends AbstractType
             'allow_delete' => true,
             'value_options' => array(),
             'allowed_keys' => null,
+            'use_container_object' => false,
             'options' => function(Options $options) {
                 return array(
                     'value_type' => $options['value_type'],
