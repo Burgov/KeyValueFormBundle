@@ -29,10 +29,10 @@ class HashToKeyValueArrayTransformer implements DataTransformerInterface
                 throw new TransformationFailedException('Duplicate key detected');
             }
 
-            $return[$data['key']] = is_object($data['value']) ? $data['value'] : array($data['key'], $data['value']);
+            $return[$data['key']] = is_object($data['value']) ? $data['value'] : array($data['key'] => $data['value']);
         }
 
         return $return;
     }
 
-} 
+}
