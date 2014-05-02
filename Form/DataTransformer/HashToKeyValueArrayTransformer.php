@@ -1,6 +1,7 @@
 <?php
 namespace Burgov\Bundle\KeyValueFormBundle\Form\DataTransformer;
 
+use Burgov\Bundle\KeyValueFormBundle\KeyValueContainer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
@@ -18,7 +19,7 @@ class HashToKeyValueArrayTransformer implements DataTransformerInterface
 
     public function reverseTransform($value)
     {
-        $return = array();
+        $return = new KeyValueContainer();
 
         foreach ($value as $data) {
             if (array('key', 'value') != array_keys($data)) {
