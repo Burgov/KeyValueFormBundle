@@ -38,9 +38,9 @@ class KeyValueTypeTest extends TypeTestCase
         );
 
         $expectedData = array(
-            'key1' => 'string-value',
-            'key2' => '5',
-            'key3' => '1',
+            'key1' => array('key1', 'string-value'),
+            'key2' => array('key2', '5'),
+            'key3' => array('key3', '1'),
         );
 
         $builder = $this->factory->createBuilder('burgov_key_value', $originalData, array('value_type' => 'text'));
