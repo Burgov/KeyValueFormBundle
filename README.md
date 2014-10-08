@@ -55,8 +55,18 @@ to a `choice` field, and allow only those values you supplied in the this option
 Besides that, this type overrides some defaults of the collection type and it's recommended you don't change them:
 `type` is set to `burgov_key_value_row` and `allow_add` and `allow_delete` are always `true`.
 
+Working with SonataAdminBundle
+------------------------------
+
+In order to render your form with add/remove buttons, you need to extend the template `SonataAdminBundle:Form:form_admin_fields.html.twig` and add this little piece of code
+```twig
+{% block burgov_key_value_widget %}
+    {{- block('sonata_type_native_collection_widget') -}}
+{% endblock %}
+```
+
 The KeyValueCollection
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
 To work with collections and the Symfony2 form layer, you can provide an adder
 and a remover method. This however only works if the adder method expects one
