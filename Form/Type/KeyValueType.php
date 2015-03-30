@@ -42,12 +42,14 @@ class KeyValueType extends AbstractType
             'type' => 'burgov_key_value_row',
             'allow_add' => true,
             'allow_delete' => true,
+            'key_options' => array(),
             'value_options' => array(),
             'allowed_keys' => null,
             'use_container_object' => false,
             'options' => function(Options $options) {
                 return array(
                     'value_type' => $options['value_type'],
+                    'key_options' => $options['key_options'],
                     'value_options' => $options['value_options'],
                     'allowed_keys' => $options['allowed_keys']
                 );
