@@ -43,16 +43,21 @@ class KeyValueTypeTest extends TypeTestCase
             'key3' => '1',
         );
 
-        $builder = $this->factory->createBuilder('burgov_key_value', $originalData, array('value_type' => 'text'));
+        $builder = $this->factory->createBuilder('burgov_key_value', $originalData, array(
+            'value_type' => 'text',
+            'key_options' => array('label' => 'label_key'),
+            'value_options' => array('label' => 'label_value')));
 
         $form = $builder->getForm();
 
         $this->assertFormTypes(array('text', 'text'), $form);
+        $this->assertFormOptions(array(array('label' => 'label_key'), array('label' => 'label_value')), $form);
 
         $form->submit($submitData);
         $this->assertTrue($form->isValid(), $form->getErrorsAsString());
 
         $this->assertFormTypes(array('text', 'text', 'text'), $form);
+        $this->assertFormOptions(array(array('label' => 'label_key'), array('label' => 'label_value')), $form);
 
         $this->assertSame($expectedData, $form->getData());
     }
@@ -67,13 +72,18 @@ class KeyValueTypeTest extends TypeTestCase
         $obj2->id = 2;
         $obj2->name = 'choice2';
 
-        $builder = $this->factory->createBuilder('burgov_key_value', null, array('value_type' => 'choice', 'value_options' => array(
-            'choice_list' => new ObjectChoiceList(array($obj1, $obj2), 'name', array(), null, 'id')
-        )));
+        $builder = $this->factory->createBuilder('burgov_key_value', null, array(
+            'value_type' => 'choice',
+            'key_options' => array('label' => 'label_key'),
+            'value_options' => array(
+                'choice_list' => new ObjectChoiceList(array($obj1, $obj2), 'name', array(), null, 'id'),
+                'label' => 'label_value'
+            )));
 
         $form = $builder->getForm();
 
         $this->assertFormTypes(array(), $form);
+        $this->assertFormOptions(array(array('label' => 'label_key'), array('label' => 'label_value')), $form);
 
         $form->submit(array(
             array(
@@ -87,6 +97,7 @@ class KeyValueTypeTest extends TypeTestCase
         ));
 
         $this->assertFormTypes(array('choice', 'choice'), $form);
+        $this->assertFormOptions(array(array('label' => 'label_key'), array('label' => 'label_value')), $form);
 
         $this->assertTrue($form->isValid());
 
@@ -98,6 +109,18 @@ class KeyValueTypeTest extends TypeTestCase
         $this->assertCount(count($types), $form);
         foreach ($types as $key => $type) {
             $this->assertEquals($type, $form->get($key)->get('value')->getConfig()->getType()->getInnerType()->getName());
+        }
+    }
+
+    private function assertFormOptions(array $options, $form)
+    {
+        for ($i = 0; $i < count($form); $i++) {
+            foreach ($options[0] as $option => $optionValue) {
+                $this->assertEquals($optionValue, $form->get($i)->get('key')->getConfig()->getOption($option));
+            }
+            foreach ($options[1] as $option => $optionValue) {
+                $this->assertEquals($optionValue, $form->get($i)->get('value')->getConfig()->getOption($option));
+            }
         }
     }
 }
