@@ -13,11 +13,12 @@ class KeyValueRowType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if (null === $options['allowed_keys']) {
-            $builder->add('key', 'text', array(
-            ));
+            $builder->add('key', 'text', $options['key_options']
+            );
         } else {
-            $builder->add('key', 'choice', array(
+            $builder->add('key', 'choice', array_merge(array(
                 'choice_list' => new SimpleChoiceList($options['allowed_keys'])
+            ), $options['key_options']
             ));
         }
 
@@ -32,6 +33,7 @@ class KeyValueRowType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+            'key_options' => array(),
             'value_options' => array(),
             'allowed_keys' => null
         ));
@@ -39,6 +41,4 @@ class KeyValueRowType extends AbstractType
         $resolver->setRequired(array('value_type'));
         $resolver->setAllowedTypes(array('allowed_keys' => array('null', 'array')));
     }
-
-
-} 
+}
