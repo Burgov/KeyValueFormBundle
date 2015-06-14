@@ -47,10 +47,8 @@ The type adds four options to the collection type options, of which one is requi
 
   * `value_type` (required) defines which form type to use to render the value field
   * `value_options` optional options to the child defined in `value_type`
-  * `allowed_keys` if this option is provided, the key field (which is usually a simple text field) will change
+  * `allowed_keys` if this option is provided, the key field (which is usually a simple text field) will change to a `choice` field, and allow only those values you supplied in the this option.
   * `use_container_object` see explanation below at 'The KeyValueCollection'
-
-to a `choice` field, and allow only those values you supplied in the this option.
 
 Besides that, this type overrides some defaults of the collection type and it's recommended you don't change them:
 `type` is set to `burgov_key_value_row` and `allow_add` and `allow_delete` are always `true`.
