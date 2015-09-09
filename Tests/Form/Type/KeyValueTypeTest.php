@@ -50,13 +50,13 @@ class KeyValueTypeTest extends TypeTestCase
 
         $form = $builder->getForm();
 
-        $this->assertFormTypes(array('text', 'text'), $form);
+        $this->assertFormTypes(array('text', 'text'), array('text', 'text'), $form);
         $this->assertFormOptions(array(array('label' => 'label_key'), array('label' => 'label_value')), $form);
 
         $form->submit($submitData);
         $this->assertTrue($form->isValid(), $form->getErrorsAsString());
 
-        $this->assertFormTypes(array('text', 'text', 'text'), $form);
+        $this->assertFormTypes(array('text', 'text', 'text'), array('text', 'text', 'text'), $form);
         $this->assertFormOptions(array(array('label' => 'label_key'), array('label' => 'label_value')), $form);
 
         $this->assertSame($expectedData, $form->getData());
@@ -82,7 +82,7 @@ class KeyValueTypeTest extends TypeTestCase
 
         $form = $builder->getForm();
 
-        $this->assertFormTypes(array(), $form);
+        $this->assertFormTypes(array(), array(), $form);
         $this->assertFormOptions(array(array('label' => 'label_key'), array('label' => 'label_value')), $form);
 
         $form->submit(array(
@@ -96,7 +96,7 @@ class KeyValueTypeTest extends TypeTestCase
             )
         ));
 
-        $this->assertFormTypes(array('choice', 'choice'), $form);
+        $this->assertFormTypes(array('text', 'text'), array('choice', 'choice'), $form);
         $this->assertFormOptions(array(array('label' => 'label_key'), array('label' => 'label_value')), $form);
 
         $this->assertTrue($form->isValid());
@@ -104,11 +104,48 @@ class KeyValueTypeTest extends TypeTestCase
         $this->assertSame(array('key1' => $obj2, 'key2' => $obj1), $form->getData());
     }
 
-    private function assertFormTypes(array $types, $form)
+    public function testWithCustomKeyType()
     {
-        $this->assertCount(count($types), $form);
-        foreach ($types as $key => $type) {
-            $this->assertEquals($type, $form->get($key)->get('value')->getConfig()->getType()->getInnerType()->getName());
+        $builder = $this->factory->createBuilder('burgov_key_value', null, array(
+            'key_type' => 'country',
+            'value_type' => 'integer',
+            'key_options' => array('label' => 'label_key'),
+        ));
+
+        $form = $builder->getForm();
+
+        $this->assertFormTypes(array(), array(), $form);
+        $this->assertFormOptions(array(array('label' => 'label_key'), array()), $form);
+
+        $form->submit(array(
+            array(
+                'key' => 'GB',
+                'value' => '2'
+            ),
+            array(
+                'key' => 'CZ',
+                'value' => '1'
+            )
+        ));
+
+        $this->assertFormTypes(array('country', 'country'), array('integer', 'integer'), $form);
+        $this->assertFormOptions(array(array('label' => 'label_key'), array()), $form);
+
+        $this->assertTrue($form->isValid());
+
+        $this->assertSame(array('GB' => 2, 'CZ' => 1), $form->getData());
+    }
+
+    private function assertFormTypes(array $keys, array $values, $form)
+    {
+        $this->assertCount(count($values), $form);
+        for ($i = 0; $i < count($form); $i++) {
+            if (isset($keys[$i])) {
+                $this->assertEquals($keys[$i], $form->get($i)->get('key')->getConfig()->getType()->getInnerType()->getName());
+            }
+            if (isset($values[$i])) {
+                $this->assertEquals($values[$i], $form->get($i)->get('value')->getConfig()->getType()->getInnerType()->getName());
+            }
         }
     }
 
