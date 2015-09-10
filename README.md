@@ -47,6 +47,8 @@ The type adds four options to the collection type options, of which one is requi
 
   * `value_type` (required) defines which form type to use to render the value field
   * `value_options` optional options to the child defined in `value_type`
+  * `key_type` defines which form type to use to render the key field (default is a `text` field)
+  * `key_options` optional options to the child defined in `key_type`
   * `allowed_keys` if this option is provided, the key field (which is usually a simple text field) will change to a `choice` field, and allow only those values you supplied in the this option.
   * `use_container_object` see explanation below at 'The KeyValueCollection'
 
