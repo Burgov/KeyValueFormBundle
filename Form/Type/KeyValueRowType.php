@@ -2,10 +2,10 @@
 
 namespace Burgov\Bundle\KeyValueFormBundle\Form\Type;
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class KeyValueRowType extends AbstractType
@@ -26,10 +26,20 @@ class KeyValueRowType extends AbstractType
 
     public function getName()
     {
+        return $this->getBlockPrefix();
+    }
+
+    public function getBlockPrefix()
+    {
         return 'burgov_key_value_row';
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $this->configureOptions($resolver);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'key_type' => 'text',
@@ -39,6 +49,13 @@ class KeyValueRowType extends AbstractType
         ));
 
         $resolver->setRequired(array('value_type'));
-        $resolver->setAllowedTypes(array('allowed_keys' => array('null', 'array')));
+
+        if (method_exists($resolver, 'setDefined')) {
+            // Symfony 2.6+ API
+            $resolver->setAllowedTypes('allowed_keys', array('null', 'array'));
+        } else {
+            // Symfony <2.6 API
+            $resolver->setAllowedTypes(array('allowed_keys' => array('null', 'array')));
+        }
     }
 }
