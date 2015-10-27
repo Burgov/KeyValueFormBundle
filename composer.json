@@ -8,7 +8,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "symfony/form": "~2.3"
+        "symfony/form": "~2.3|3.*"
     },
     "extra": {
         "branch-alias": {
