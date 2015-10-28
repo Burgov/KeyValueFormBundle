@@ -71,7 +71,7 @@ class KeyValueType extends AbstractType
 
         if (method_exists($resolver, 'setDefined')) {
             // Symfony 2.6+ API
-            $resolver->setAllowedTypes('allowed_keys' => array('null', 'array'));
+            $resolver->setAllowedTypes(array('allowed_keys' => array('null', 'array')));
         } else {
             // Symfony <2.6 API
             $resolver->setAllowedTypes(array('allowed_keys' => array('null', 'array')));
