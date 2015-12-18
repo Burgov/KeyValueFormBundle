@@ -68,7 +68,14 @@ class KeyValueType extends AbstractType
         ));
 
         $resolver->setRequired(array('value_type'));
-        $resolver->setAllowedTypes(array('allowed_keys' => array('null', 'array')));
+
+        if (method_exists($resolver, 'setDefined')) {
+            // Symfony 2.6+ API
+            $resolver->setAllowedTypes('allowed_keys', array('null', 'array'));
+        } else {
+            // Symfony <2.6 API
+            $resolver->setAllowedTypes(array('allowed_keys' => array('null', 'array')));
+        }
     }
 
     public function getParent()
