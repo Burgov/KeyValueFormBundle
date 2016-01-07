@@ -10,6 +10,9 @@
         "php": ">=5.3.3",
         "symfony/form": "~2.3|3.*"
     },
+    "conflict": {
+        "symfony/form": "2.8.1"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.1-dev"
