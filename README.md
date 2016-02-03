@@ -142,3 +142,8 @@ class Model
     }
 }
 ```
+
+Symfony version
+---------------
+
+Use the current stable branch for Symfony 3.x. Use the branch tagged 1.2.0 for Symfony 2.x
