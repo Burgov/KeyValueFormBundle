@@ -48,10 +48,10 @@ class KeyValueType extends AbstractType
         $isSf28 = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
 
         $resolver->setDefaults(array(
-            $isSf28 ? 'entry_type' : 'type' => 'burgov_key_value_row',
+            $isSf28 ? 'entry_type' : 'type' => $isSf28 ? __NAMESPACE__.'\KeyValueRowType' : 'burgov_key_value_row',
             'allow_add' => true,
             'allow_delete' => true,
-            'key_type' => 'text',
+            'key_type' => $isSf28 ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text',
             'key_options' => array(),
             'value_options' => array(),
             'allowed_keys' => null,

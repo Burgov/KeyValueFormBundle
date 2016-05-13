@@ -41,8 +41,11 @@ class KeyValueRowType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
+        // check if Form component version 2.8+ is used
+        $isSf28 = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+
         $resolver->setDefaults(array(
-            'key_type' => 'text',
+            'key_type' => $isSf28 ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text',
             'key_options' => array(),
             'value_options' => array(),
             'allowed_keys' => null
