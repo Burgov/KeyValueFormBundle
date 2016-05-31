@@ -29,14 +29,17 @@ public function registerBundles()
 Usage
 -----
 
-To add to your form, use the alias `burgov_key_value`:
+To add to your form, use the `KeyValueType` type:
 
 ```php
-$builder->add('parameters', 'burgov_key_value', array('value_type' => 'text'));
+use Burgov\Bundle\KeyValueFormBundle\Form\Type\KeyValueType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
+$builder->add('parameters', KeyValueType::class, array('value_type' => TextType::class));
 
 // or
 
-$formFactory->create('burgov_key_value', $data, array('value_type' => 'text'));
+$formFactory->create(KeyValueType::class, $data, array('value_type' => TextType::class));
 ```
 
 The type extends the collection type, so for rendering it in the browser, the same logic is used. See the
@@ -53,7 +56,7 @@ The type adds four options to the collection type options, of which one is requi
   * `use_container_object` see explanation below at 'The KeyValueCollection'
 
 Besides that, this type overrides some defaults of the collection type and it's recommended you don't change them:
-`type` is set to `burgov_key_value_row` and `allow_add` and `allow_delete` are always `true`.
+`type` is set to `BurgovKeyValueRow::class` and `allow_add` and `allow_delete` are always `true`.
 
 Working with SonataAdminBundle
 ------------------------------
@@ -93,7 +96,7 @@ it, you need to set the `use_container_object` option on the form type to
 /** @var $builder Symfony\Component\Form\FormBuilderInterface */
 $builder->add('options', 'burgov_key_value', array(
     'required' => false,
-    'value_type' => 'text',
+    'value_type' => TextType::class,
     'use_container_object' => true,
 ));
 ```
