@@ -4,7 +4,6 @@ namespace Burgov\Bundle\KeyValueFormBundle\Form\Type;
 
 use Burgov\Bundle\KeyValueFormBundle\Form\DataTransformer\HashToKeyValueArrayTransformer;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -49,10 +48,10 @@ class KeyValueType extends AbstractType
         $isSf28 = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
 
         $resolver->setDefaults(array(
-            $isSf28 ? 'entry_type' : 'type' => $isSf28 ? KeyValueRowType::class : 'burgov_key_value_row',
+            $isSf28 ? 'entry_type' : 'type' => $isSf28 ? __NAMESPACE__.'\KeyValueRowType' : 'burgov_key_value_row',
             'allow_add' => true,
             'allow_delete' => true,
-            'key_type' => $isSf28 ? TextType::class : 'text',
+            'key_type' => $isSf28 ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text',
             'key_options' => array(),
             'value_options' => array(),
             'allowed_keys' => null,
