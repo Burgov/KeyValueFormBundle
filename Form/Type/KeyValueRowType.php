@@ -3,7 +3,8 @@
 namespace Burgov\Bundle\KeyValueFormBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
+use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -15,8 +16,8 @@ class KeyValueRowType extends AbstractType
         if (null === $options['allowed_keys']) {
             $builder->add('key', $options['key_type'], $options['key_options']);
         } else {
-            $builder->add('key', 'choice', array_merge(array(
-                'choice_list' => new SimpleChoiceList($options['allowed_keys'])
+            $builder->add('key', ChoiceType::class, array_merge(array(
+                'choices' => $options['allowed_keys']
             ), $options['key_options']
             ));
         }
