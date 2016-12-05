@@ -64,9 +64,9 @@ class KeyValueTypeTest extends TypeTestCase
         );
 
         $expectedData = array(
-            'key1' => 'string-value',
-            'key2' => '5',
-            'key3' => '1',
+            'key1' => array('key1' => 'string-value'),
+            'key2' => array('key2' => '5'),
+            'key3' => array('key3' => '1'),
         );
 
         $form = $this->factory->create(
