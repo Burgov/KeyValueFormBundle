@@ -10,6 +10,8 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 class KeyValueType extends AbstractType
 {
@@ -40,6 +42,12 @@ class KeyValueType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $this->configureOptions($resolver);
+    }
+
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['allow_add'] = $options['allow_add'];
+        $view->vars['allow_delete'] = $options['allow_delete'];
     }
 
     public function configureOptions(OptionsResolver $resolver)
