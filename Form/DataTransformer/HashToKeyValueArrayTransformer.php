@@ -41,7 +41,7 @@ class HashToKeyValueArrayTransformer implements DataTransformerInterface
                 throw new TransformationFailedException;
             }
 
-            if (array_key_exists($data['key'], $return)) {
+            if (isset($data['key'], $return[$data['key']])) {
                 throw new TransformationFailedException('Duplicate key detected');
             }
 
